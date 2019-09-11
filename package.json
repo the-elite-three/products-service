@@ -1,0 +1,22 @@
+{
+  "name": "products-service",
+  "version": "1.0.0",
+  "description": "server and database for products api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-elite-three/products-service.git"
+  },
+  "author": "Brady C",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/the-elite-three/products-service/issues"
+  },
+  "homepage": "https://github.com/the-elite-three/products-service#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
