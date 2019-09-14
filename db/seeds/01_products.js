@@ -2,7 +2,7 @@ const seedFile = require('knex-seed-file');
  
 exports.seed = function(knex) {
   knex('products').del()
-    .then(() => seedFile(knex, '/Users/johnconnelly/Documents/SDC_data/product.csv', 'products',
+    .then(() => seedFile(knex, '/Users/johnconnelly/workspace/project-green/products-service/data/product.csv', 'products',
     {
       columnSeparator: ',',
       ignoreFirstLine: true,

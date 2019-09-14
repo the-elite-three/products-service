@@ -4,6 +4,10 @@ const options = {
   development: {
       client: 'pg',
       connection: `postgres://johnconnelly:${DBPW}@localhost:5432/products`,
+      pool: {
+        min: 2,
+        max: 100
+      },
       migrations: {
           directory: __dirname + '/db/migrations',
         },
