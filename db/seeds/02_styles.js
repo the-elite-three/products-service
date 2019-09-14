@@ -8,6 +8,7 @@ exports.seed = seeder({
   encoding: 'utf8',
   parser: {
     delimiter: ',',
-    quote: '"'
+    quote: '"',
+    escape: '\\'
   }
 });
