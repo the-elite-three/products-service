@@ -3,7 +3,7 @@ require('dotenv').config({path: './.env'});
 const options = {
   development: {
       client: 'pg',
-      connection: `postgres://johnconnelly:${DBPW}@localhost:5432/products`,
+      connection: `postgres://johnconnelly:${process.env.DBPW}@localhost:5432/products`,
       migrations: {
           directory: __dirname + '/db/migrations',
         },

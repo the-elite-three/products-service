@@ -1,11 +1,13 @@
-const seedFile = require('knex-seed-file');
- 
-exports.seed = function(knex) {
-  knex('skus').del()
-    .then(() => seedFile(knex, '/Users/johnconnelly/Documents/SDC_data/skus.csv', 'skus',
-    {
-      columnSeparator: ',',
-      ignoreFirstLine: true,
-      mapTo: ['id', 'styleId', 'size', 'quantity']
-    }));
-};
+const seeder = require('knex-csv-seeder').default
+
+exports.seed = seeder({
+  table: 'skus',
+  file: '/Users/johnconnelly/Documents/SDC_data/skus.csv',
+  recordsPerQuery: 100,
+  encoding: 'utf8',
+  parser: {
+    delimiter: ',',
+    quote: '"',
+    escape: '\\'
+  }
+});
