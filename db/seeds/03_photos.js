@@ -1,16 +1,11 @@
-const path = require('path');
- 
 const seedFile = require('knex-seed-file');
-
+ 
 exports.seed = function(knex) {
-  // Deletes ALL existing entries
-  return knex('photos').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('photos').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
+  knex('photos').del()
+    .then(() => seedFile(knex, '/Users/johnconnelly/Documents/SDC_data/photos.csv', 'photos',
+    {
+      columnSeparator: ',',
+      ignoreFirstLine: true,
+      mapTo: ['id', 'styleId', 'url', 'thumbnail_url']
+    }));
 };
