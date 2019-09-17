@@ -1,7 +1,7 @@
-const dataSeven = require('../../data/skusSeven.json');
-const dataEight = require('../../data/skusEight.json');
-const dataNine = require('../../data/skusNine.json');
+const dataThirteen = require('../../data/skusThirteen.json');
+const dataFourteen = require('../../data/skusFourteen.json');
+const dataFifteen = require('../../data/skusFifteen.json');
 
-exports.seed = knex => knex.batchInsert('skus', dataSeven, 1000)
-  .then(() => knex.batchInsert('skus', dataEight, 1000))
-  .then(() => knex.batchInsert('skus', dataNine, 1000))
+exports.seed = knex => knex.batchInsert('skus', dataThirteen, 1000)
+  .then(() => knex.batchInsert('skus', dataFourteen, 1000))
+  .then(() => knex.batchInsert('skus', dataFifteen, 1000))
