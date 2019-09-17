@@ -1,6 +1,5 @@
 const data = require('../../data/product.json')
  
-exports.seed = function(knex, Promise) {
-  console.log(data[0])
-  return knex('products').insert(data)
-};
+exports.seed = knex => knex('products').del() 
+  .then(() => knex.batchInsert('products', data, 1000)) 
+  .catch((e) => console.error(e))

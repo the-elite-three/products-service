@@ -4,7 +4,7 @@ module.exports.up = function(knex, Promise) {
     table.increments('id');
     table.string('name');
     table.string('slogan');
-    table.string('description');
+    table.string('description', 500);
     table.string('category');
     table.integer('default_price');
   })
@@ -12,8 +12,8 @@ module.exports.up = function(knex, Promise) {
     table.increments('id');
     table.integer('productId').references('id').inTable('products');
     table.string('name');
-    table.integer('sale_price');
-    table.integer('origonal_price');
+    table.string('sale_price');
+    table.integer('original_price');
     table.integer('default_style');
   })
   .createTable('photos', (table) => {
@@ -42,10 +42,10 @@ module.exports.up = function(knex, Promise) {
 };
 
 module.exports.down = function(knex) {
-  return knex.schema.dropTable('products')
-    .dropTable('styles')
+  return knex.schema.dropTable('skus')
     .dropTable('photos')
-    .dropTable('skus')
+    .dropTable('styles')
     .dropTable('related')
-    .dropTable('features');
+    .dropTable('features')
+    .dropTable('products');
 };
