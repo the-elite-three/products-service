@@ -10,9 +10,12 @@ module.exports.productQuery = (param, res) => {
 }
 
 module.exports.stylesQuery = (param, res) => {
-
+  db('styles').where('productId', param)
+    .then((query) => res.json(query))
 }
 
 module.exports.relatedQuery = (param, res) => {
-
+  db('related').where('current_product_id', param)
+    .then((query) => query.map((row) => row.related_product_id))
+    .then((relArr) => res.json(relArr))
 }

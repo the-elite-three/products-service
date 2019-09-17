@@ -8,15 +8,15 @@ router.get('/list', (req, res) => {
 })
 
 router.get('/:product_id', (req, res) => {
-  productQuery(param, res)
+  productQuery(req.params.product_id, res)
 })
 
 router.get('/:product_id/related', (req, res) => {
-  stylesQuery(param, res)
+  relatedQuery(req.params.product_id, res)
 })
 
 router.get('/:product_id/styles', (req, res) => {
-  relatedQuery(param, res)
+  stylesQuery(req.params.product_id, res)
 })
 
 module.exports = router;
