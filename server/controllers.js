@@ -1,7 +1,10 @@
 const db = require('../db/knex');
 
-module.exports.listQuery = (param, res) => {
-
+module.exports.listQuery = (res, page = 1, count = 5) => {
+  console.log('query', page, count)
+  const range = [page === 1 ? 1 : (page - 1) * count, page * count]
+  db('products').whereBetween('id', range)
+    .then((query) => res.json(query))
 }
 
 module.exports.productQuery = (param, res) => {

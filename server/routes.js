@@ -3,8 +3,12 @@ const router = express.Router()
 
 const { listQuery, productQuery, stylesQuery, relatedQuery} = require('./controllers')
 
-router.get('/list', (req, res) => {
-  listQuery(param, res)
+// router.get('/list', (req, res) => {
+//   listQuery(res)
+// })
+
+router.get('/list/:page?/:count?', (req, res) => {
+  listQuery(res, req.params.page, req.params.count)
 })
 
 router.get('/:product_id', (req, res) => {
