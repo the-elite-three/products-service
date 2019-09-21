@@ -35,7 +35,7 @@ const reduceStyles = (data, id) => {
   const parsedData = data.reduce((acc, el) => {
     if (acc[el.styleId]) {
       acc[el.styleId].photos.push({thumbnail_url: el.thumbnail_url, url: el.url})
-      acc[el.styleId].skus.push({[el.size]: el.id})
+      acc[el.styleId].skus[el.size] = el.quantity;
     } else {
         Object.assign(acc, {[el.styleId]: {
           style_id: el.styleId,
@@ -45,7 +45,7 @@ const reduceStyles = (data, id) => {
           default_style: el.default_style
           }})
         acc[el.styleId].photos = [{thumbnail_url: el.thumbnail_url, url: el.url}]
-        acc[el.styleId].skus = [{[el.size]: el.id}]
+        acc[el.styleId].skus = {[el.size]: el.id}
       }
       return acc;
   }, {})
