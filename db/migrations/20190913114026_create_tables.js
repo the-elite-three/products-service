@@ -15,29 +15,35 @@ module.exports.up = function(knex, Promise) {
     table.string('sale_price');
     table.integer('original_price');
     table.integer('default_style');
+    table.index('productId');
   })
   .createTable('photos', (table) => {
     table.increments('id');
     table.integer('styleId').references('id').inTable('styles');
     table.string('url');
     table.string('thumbnail_url');
+    table.index('styleId')
   })
   .createTable('skus', (table) => {
     table.increments('id');
     table.integer('styleId').references('id').inTable('styles');
     table.string('size');
     table.integer('quantity');
+    table.index('styleId');
   })
   .createTable('related', (table) => {
     table.increments('id');
     table.integer('current_product_id').references('id').inTable('products');
     table.integer('related_product_id').references('id').inTable('products');
+    table.index('current_product_id');
+    table.index('related_product_id');
   })
   .createTable('features', (table) => {
     table.increments('id');
     table.integer('product_id').references('id').inTable('products');
     table.string('feature');
     table.string('value');
+    table.index('product_id')
   });
 };
 

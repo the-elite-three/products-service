@@ -21,9 +21,6 @@ module.exports.stylesQuery = (param, res) => {
   let data = null;
   db('styles').where('productId', param).leftJoin('photos', 'styles.id', '=', 'photos.styleId')
     .leftJoin('skus', 'styles.id', '=', 'skus.styleId')
-    //.then((query) => data = query)
-    //.then((query) => query.map((style) => db('photos').where('styleId', style.id)))
-    //.then((query) => Promise.all(query))
     .then((query) => reduceStyles(query, param))
     .then((parsed) => res.json(parsed))
 }
