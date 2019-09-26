@@ -18,12 +18,16 @@ const options = {
     },
   production: {
       client: 'pg',
-      connection: process.env.DATABASE_URL,
+      connection: `${process.env.DATABASE_URL}`,
+      pool: {
+        min: 2,
+        max: 100
+      },
       migrations: {
           directory: __dirname + '/db/migrations',
         },
       seeds: {
-          directory: __dirname + '/db/seeds/production',
+          directory: __dirname + '/db/seeds',
         },
     },
 };

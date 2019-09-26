@@ -23,7 +23,9 @@
     "express": "^4.17.1",
     "knex": "^0.19.4",
     "knex-csv-seeder": "^0.4.1",
-    "pg": "^7.12.1"
+    "newrelic": "^5.11.0",
+    "pg": "^7.12.1",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "csvtojson": "^2.0.10",

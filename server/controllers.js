@@ -1,34 +1,79 @@
 const db = require('../db/knex');
+const redis = require('redis');
+const client = redis.createClient(6379)
 
 module.exports.listQuery = (res, page = 1, count = 5) => {
-  console.log('query', page, count)
   const range = [page === 1 ? 1 : (page - 1) * count, page * count]
-  db('products').whereBetween('id', range)
-    .then((query) => res.json(query))
+  const productListRedisKey = `user:list:${page}${count}`
+  client.get(productListRedisKey, (err, productList) => {
+    if (productList) {
+      res.json(JSON.parse(productList))
+    } else {
+      db('products').whereBetween('id', range)
+        .then((query) => {
+          client.setex(productListRedisKey, 3600, JSON.stringify(query));
+          return query;
+        })
+        .then((query) => res.json(query))
+        .catch((err) => console.error(err))
+    }
+  })
 }
 
 module.exports.productQuery = (param, res) => {
   let data = null;
-  db('products').where('id', param)
-    .then((query) => data = query[0])
-    .then(() => db('features').where('product_id', param))
-    .then((query) => query.map((row) => {return { feature: row.feature, value: row.value }}))
-    .then((query) => data.features = query)
-    .then(() => res.json(data))
+  const productRedisKey = `user:product:${param}`
+  client.get(productRedisKey, (err, product) => {
+    if(product) {
+      res.json(JSON.parse(product))
+    } else {
+      db('products').where('id', param)
+        .then((query) => data = query[0])
+        .then(() => db('features').where('product_id', param))
+        .then((query) => query.map((row) => {return { feature: row.feature, value: row.value }}))
+        .then((query) => data.features = query)
+        .then(() => client.setex(productRedisKey, 3600, JSON.stringify(data)))
+        .then(() => res.json(data))
+        .catch((err) => console.error(err))
+    }
+  })
 }
 
 module.exports.stylesQuery = (param, res) => {
-  let data = null;
-  db('styles').where('productId', param).leftJoin('photos', 'styles.id', '=', 'photos.styleId')
-    .leftJoin('skus', 'styles.id', '=', 'skus.styleId')
-    .then((query) => reduceStyles(query, param))
-    .then((parsed) => res.json(parsed))
+  const stylesRedisKey = `user:style:${param}`;
+  client.get(stylesRedisKey, (err, style) => {
+    if (style) {
+      res.json(JSON.parse(style))
+    } else {
+      db('styles').where('productId', param).leftJoin('photos', 'styles.id', '=', 'photos.styleId')
+        .leftJoin('skus', 'styles.id', '=', 'skus.styleId')
+        .then((query) => reduceStyles(query, param))
+        .then((parsed) => {
+          client.setex(stylesRedisKey, 3600, JSON.stringify(parsed));
+          return parsed;
+        })
+        .then((parsed) => res.json(parsed))
+        .catch((err) => console.error(err))
+    }
+  })
 }
 
 module.exports.relatedQuery = (param, res) => {
-  db('related').where('current_product_id', param)
-    .then((query) => query.map((row) => row.related_product_id))
-    .then((relArr) => res.json(relArr))
+  const relatedRedisKey = `user:related:${param}`;
+  client.get(relatedRedisKey, (err, related) => {
+    if (related) {
+      res.json(JSON.parse(related))
+    } else {
+      db('related').where('current_product_id', param)
+        .then((query) => query.map((row) => row.related_product_id))
+        .then((relArr) => {
+          client.setex(relatedRedisKey, 3600, JSON.stringify(relArr));
+          return relArr;
+        })
+        .then((relArr) => res.json(relArr))
+        .catch((err) => console.error(err))
+    }
+  })
 }
 
 const reduceStyles = (data, id) => {
